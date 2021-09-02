@@ -36,7 +36,7 @@ def error(update, context):
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 def getStock(update,context):
-    ticker = update.message.text.strip().lower()
+    ticker = update.message.text.strip().upper()
     # Retrieve Data from yafoo finance about the ticker
     data = yf.download(tickers = ticker, period='5m', interval='1m')
     if data.size > 0:
