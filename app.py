@@ -60,9 +60,9 @@ def main():
     # on different commands - answer in Telegram
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
-    dp.add_handler(CommandHandler("get", getStock))
 
     # on noncommand i.e message - echo the message on Telegram
+    dp.add_handler(MessageHandler(Filters.text,getStock))
     dp.add_handler(MessageHandler(Filters.text, echo))
 
     # log all errors
@@ -85,5 +85,5 @@ if __name__ == '__main__':
 # Push to heroku:
 # git add .
 # git commit -m "first commit"
-# heroku git:remote -a YourAppName
+# heroku git:remote -a cryptic-stream-96120
 # git push heroku master
