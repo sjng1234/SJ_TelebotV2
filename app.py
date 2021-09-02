@@ -15,7 +15,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
-TOKEN = '1957192471:AAH9usVw8M9j5-Wsm5Bh5PgWv_5dCkEisk4'
+TOKEN = os.getenv('TELE_TOKEN')
 
 # Define a few command handlers. These usually take the two arguments update and
 # context. Error handlers also receive the raised TelegramError object in error.
