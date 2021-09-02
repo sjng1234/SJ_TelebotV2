@@ -43,7 +43,7 @@ def getStock(update,context):
         data = data.reset_index()
         data["format_date"] = data['Datetime'].dt.strftime('%m/%d %I:%M %p')
         data.set_index('format_date', inplace=True)
-        update.message.reply_text(data['Close'].to_string(header=False))
+        update.message.reply_text('Close Price of TSLA for past 5 minutes:','\n'+data['Close'].to_string(header=False))
     else:
         update.message.reply_text("No data found!")
 
@@ -62,8 +62,8 @@ def main():
     dp.add_handler(CommandHandler("help", help))
 
     # on noncommand i.e message - echo the message on Telegram
+    # dp.add_handler(MessageHandler(Filters.text, echo))
     dp.add_handler(MessageHandler(Filters.text,getStock))
-    dp.add_handler(MessageHandler(Filters.text, echo))
 
     # log all errors
     dp.add_error_handler(error)
