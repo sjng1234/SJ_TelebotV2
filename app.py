@@ -43,7 +43,7 @@ def getStock(update,context):
         data = data.reset_index()
         data["format_date"] = data['Datetime'].dt.strftime('%m/%d %I:%M %p')
         data.set_index('format_date', inplace=True)
-        update.message.reply_text('Close Price of TSLA for past 5 minutes:','\n'+data['Close'].to_string(header=False))
+        update.message.reply_text('Close Price of TSLA for past 5 minutes:'+'\n'+data['Close'].to_string(header=False))
     else:
         update.message.reply_text("No data found!")
 
