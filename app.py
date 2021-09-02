@@ -7,6 +7,7 @@ Deployed using heroku.
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import os
+import yfinance as yf
 PORT = int(os.environ.get('PORT', 5000))
 
 # Enable logging
@@ -34,6 +35,18 @@ def error(update, context):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
+def getStock(update,context):
+    ticker = update.message.text.strip().lower()
+    # Retrieve Data from yafoo finance about the ticker
+    data = yf.download(tickers = ticker, period='5m', interval='1m')
+    if data.size > 0:
+        data = data.reset_index()
+        data["format_date"] = data['Datetime'].dt.strftime('%m/%d %I:%M %p')
+        data.set_index('format_date', inplace=True)
+        update.message.reply_text(data['Close'].to_string(header=False))
+    else:
+        update.message.reply_text("No data found!")
+
 def main():
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
@@ -47,6 +60,7 @@ def main():
     # on different commands - answer in Telegram
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
+    dp.add_handler(CommandHandler("get", getStock))
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
@@ -67,3 +81,9 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# Push to heroku:
+# git add .
+# git commit -m "first commit"
+# heroku git:remote -a YourAppName
+# git push heroku master
